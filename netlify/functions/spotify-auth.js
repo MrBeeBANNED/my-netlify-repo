@@ -1,17 +1,22 @@
 const fetch = require('node-fetch');
 
+// Estas pueden ser tus credenciales reales, pero te recomendaría usar variables de entorno para mayor seguridad.
+const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
+const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
+const REDIRECT_URI = 'https://auth.fran-ai.com/.netlify/functions/callback';
+
 exports.handler = async function(event, context) {
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: "Method Not Allowed" };
     }
     
-    const { client_id, client_secret, code, redirect_uri } = JSON.parse(event.body);
+    const { code } = JSON.parse(event.body);
     
-    const auth = 'Basic ' + new Buffer(client_id + ':' + client_secret).toString('base64');
+    const auth = 'Basic ' + new Buffer(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64');
     const body = new URLSearchParams();
     body.append('grant_type', 'authorization_code');
     body.append('code', code);
-    body.append('redirect_uri', redirect_uri);
+    body.append('redirect_uri', REDIRECT_URI);
     
     try {
         const response = await fetch('https://accounts.spotify.com/api/token', {
