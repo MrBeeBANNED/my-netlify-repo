@@ -1,8 +1,8 @@
 {
-  "name": "functions",
+  "name": "my-netlify-repo",
   "version": "1.0.0",
   "description": "",
-  "main": "spotify-auth.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
